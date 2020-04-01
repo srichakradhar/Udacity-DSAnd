@@ -1,0 +1,88 @@
+Task 0
+
+O(1)
+Fetching the first record of texts is accessing the memory pointed to, by the array texts whereas, the last element can be accessed by adding the length of the array to the starting index. In python there is a shortcut which uses negative indices. So, they both take constant amount of time and hence the time complexity is O(1).
+
+======================================================
+
+Task 1
+
+O(n^2)
+I have used set to keep track of the unique telephone numbers.
+The average time complexity of adding an element to a set is O(1) and the worst time complexity is O(n)
+So, 
+Time complexity analysis              Avg, Worst
+for log in texts:                 --> O(n), O(n)
+    telephone_numbers.add(log[0]) --> O(1), O(n)
+    telephone_numbers.add(log[1]) --> O(1), O(n)
+                                     ------------
+                                 --> O(n), O(2n^2)
+                                 
+for log in calls:                 --> O(n), O(n)
+    telephone_numbers.add(log[0]) --> O(1), O(n)
+    telephone_numbers.add(log[1]) --> O(1), O(n)
+                                     ------------
+                                 --> O(n), O(2n^2)
+Since O(2n^2) ~= O(n^2), the *worst* time complexity of finding unique telephone numbers is O(n^2).
+
+======================================================
+
+Task 2
+
+O(n^2)
+Time complexity analysis                    Avg, Worst
+for log in calls:                       --> O(n), O(n)
+    duration_log = int(log[3])
+    for number in log[0:2]:             --> O(1), O(1)
+        if number not in duration:      --> O(1), O(n)
+            duration[number] = duration_log
+            if duration_log > longest:
+                longest = duration_log
+                batting_baba = number
+
+It needs O(n) time to traverse the list and O(n) to check if the number already exists in the dictionary for the worst case scenario.
+So, finding the longest time spent takes O(n) on average and O(n^2) in worst case (as checking if an item is in the list takes O(n) in worst case).
+
+======================================================
+
+Task 3
+
+O(n^2logn)
+Time complexity analysis                    Avg, Worst
+for log in calls:                       --> O(n), O(n)
+    # for people calling from Bangalore
+    if log[0].startswith('(080)'):      --> O(1), O(1)
+        callers += 1
+        # for fixed lines
+        if log[1][0] == '(':
+            area_codes.add(log[1][1:].split(')')[0])
+            if log[1].startswith('(080)'):
+                receivers += 1
+        # for Mobiles
+        elif log[1][0] in ['7', '8', '9']:
+            area_codes.add(log[1][:4])  --> O(1), O(n)
+        # for Telemarketers
+        elif log[1].startswith('140'):
+            area_codes.add('140')       --> O(1), O(n)
+
+for code in sorted(area_codes):         --> O(nlogn), O(nlogn)
+
+It takes O(n) time for looping through the list and O(n) to check if an item is in the list and O(nlogn) for sorting in the worst case scenario. So, the time complexity for finding out the unique area codes and the calls from fixed lines in bangalore to other fixed lines in Bangalore is O(n^2logn)
+
+======================================================
+
+Task 4
+
+O(n^2)
+
+Time complexity analysis                    Avg, Worst
+receivers = set()
+for log in texts:                       --> O(n), O(n)
+    receivers.add(log[0])               --> O(1), O(n)
+    receivers.add(log[1])               --> O(1), O(n)
+
+for log in calls:                       --> O(n), O(n)
+    callers.add(log[0])                 --> O(1), O(n)
+    receivers.add(log[1])               --> O(1), O(n)
+
+It takes O(n) time to traverse the list and O(2n) to check if both the caller and reciever numbers already exists in the dictionary for the worst case scenario. So, it takes O(2n^2) or O(n^2) time to find the numbers that could be telemarketers.
